@@ -8,6 +8,7 @@ const Navbar: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
   const isActive = (path: string) => {
     return location.pathname === path;
@@ -53,6 +54,16 @@ const Navbar: React.FC = () => {
                 }`}
               >
                 Клиенты
+              </button>
+              <button
+                onClick={() => navigate('/calendar')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  isActive('/calendar')
+                    ? 'bg-blue-50 text-blue-600'
+                    : 'text-gray-600 hover:bg-gray-50'
+                }`}
+              >
+                Календарь
               </button>
             </div>
           </div>

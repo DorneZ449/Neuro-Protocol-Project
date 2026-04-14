@@ -4,6 +4,7 @@ import { AuthProvider } from './context/AuthContext';
 import { CurrencyProvider } from './context/CurrencyContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Navbar from './components/Navbar';
+import SupportWidget from './components/SupportWidget';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import ClientList from './pages/ClientList';
@@ -11,6 +12,7 @@ import ClientDetails from './pages/ClientDetails';
 import Admin from './pages/Admin';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
+import Calendar from './pages/Calendar';
 import './index.css';
 
 const queryClient = new QueryClient();
@@ -30,6 +32,7 @@ function App() {
                     <ProtectedRoute>
                       <Navbar />
                       <Dashboard />
+                      <SupportWidget />
                     </ProtectedRoute>
                   }
                 />
@@ -75,6 +78,15 @@ function App() {
                     <ProtectedRoute>
                       <Navbar />
                       <Settings />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/calendar"
+                  element={
+                    <ProtectedRoute>
+                      <Navbar />
+                      <Calendar />
                     </ProtectedRoute>
                   }
                 />
