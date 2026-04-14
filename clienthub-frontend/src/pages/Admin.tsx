@@ -5,8 +5,9 @@ import api from '../api/axios';
 
 interface User {
   id: number;
-  username: string;
+  name: string;
   email: string;
+  role: string;
   created_at: string;
 }
 
@@ -16,7 +17,7 @@ interface Client {
   email: string;
   phone: string;
   company: string;
-  tags: string[];
+  tags: string;
   created_at: string;
 }
 
@@ -32,7 +33,7 @@ interface Interaction {
   id: number;
   client_id: number;
   type: string;
-  notes: string;
+  description: string;
   created_at: string;
 }
 
@@ -134,19 +135,21 @@ export default function Admin() {
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Username</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Имя</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Роль</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Создан</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {data.users.map((user) => (
-                <tr key={user.id}>
-                  <td className="px-6 py-4 whitespace-nowrap">{user.id}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{user.username}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{user.email}</td>
+              {data.users.map((u) => (
+                <tr key={u.id}>
+                  <td className="px-6 py-4 whitespace-nowrap">{u.id}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{u.name}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{u.email}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{u.role}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {new Date(user.created_at).toLocaleString('ru-RU')}
+                    {new Date(u.created_at).toLocaleString('ru-RU')}
                   </td>
                 </tr>
               ))}
@@ -176,7 +179,7 @@ export default function Admin() {
                   <td className="px-6 py-4 whitespace-nowrap">{client.phone}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{client.company}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {client.tags?.join(', ') || '-'}
+                    {client.tags || '-'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {new Date(client.created_at).toLocaleString('ru-RU')}
@@ -203,7 +206,7 @@ export default function Admin() {
                 <tr key={order.id}>
                   <td className="px-6 py-4 whitespace-nowrap">{order.id}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{order.client_id}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">${order.amount}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{order.amount} ₽</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`px-2 py-1 rounded text-xs ${
                       order.status === 'completed' ? 'bg-green-100 text-green-800' :
@@ -239,7 +242,7 @@ export default function Admin() {
                   <td className="px-6 py-4 whitespace-nowrap">{interaction.id}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{interaction.client_id}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{interaction.type}</td>
-                  <td className="px-6 py-4">{interaction.notes}</td>
+                  <td className="px-6 py-4">{interaction.description}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {new Date(interaction.created_at).toLocaleString('ru-RU')}
                   </td>
