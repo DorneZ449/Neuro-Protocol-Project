@@ -3,6 +3,7 @@ export interface User {
   email: string;
   name: string;
   role: string;
+  avatar_url?: string;
 }
 
 export interface Client {

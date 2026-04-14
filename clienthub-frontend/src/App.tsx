@@ -8,6 +8,8 @@ import Dashboard from './pages/Dashboard';
 import ClientList from './pages/ClientList';
 import ClientDetails from './pages/ClientDetails';
 import Admin from './pages/Admin';
+import Profile from './pages/Profile';
+import Settings from './pages/Settings';
 import './index.css';
 
 const queryClient = new QueryClient();
@@ -53,6 +55,24 @@ function App() {
                   <ProtectedRoute>
                     <Navbar />
                     <Admin />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <Navbar />
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/settings"
+                element={
+                  <ProtectedRoute>
+                    <Navbar />
+                    <Settings />
                   </ProtectedRoute>
                 }
               />
