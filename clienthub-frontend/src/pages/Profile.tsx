@@ -14,20 +14,46 @@ export default function Profile() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 2 * 1024 * 1024) {
-      setMessage('Файл слишком большой. Максимум 2 МБ');
+    if (file.size > 5 * 1024 * 1024) {
+      setMessage('Файл слишком большой. Максимум 5 МБ');
       return;
     }
 
     setUploadingImage(true);
+
+    const img = new Image();
     const reader = new FileReader();
 
-    reader.onloadend = () => {
-      setAvatarUrl(reader.result as string);
+    reader.onload = (event) => {
+      img.src = event.target?.result as string;
+    };
+
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+
+      let width = img.width;
+      let height = img.height;
+      const maxSize = 400;
+
+      if (width > height && width > maxSize) {
+        height = (height * maxSize) / width;
+        width = maxSize;
+      } else if (height > maxSize) {
+        width = (width * maxSize) / height;
+        height = maxSize;
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      ctx?.drawImage(img, 0, 0, width, height);
+
+      const compressedBase64 = canvas.toDataURL('image/jpeg', 0.8);
+      setAvatarUrl(compressedBase64);
       setUploadingImage(false);
     };
 
-    reader.onerror = () => {
+    img.onerror = () => {
       setMessage('Ошибка загрузки изображения');
       setUploadingImage(false);
     };
@@ -123,7 +149,7 @@ export default function Profile() {
               </label>
             </div>
             <p className="text-xs text-gray-500 mt-1">
-              Поддерживаются JPG, PNG, GIF. Максимум 2 МБ
+              Поддерживаются JPG, PNG, GIF. Максимум 5 МБ. Изображение будет автоматически сжато до 400x400px
             </p>
           </div>
 
