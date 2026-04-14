@@ -1,15 +1,44 @@
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 
 export default function Settings() {
   const { user } = useAuth();
+  const { theme, setTheme } = useTheme();
 
   if (!user) return null;
+
+  const themes = [
+    { id: 'light' as const, name: 'Светлая', icon: '☀️', description: 'Классическая светлая тема' },
+    { id: 'dark' as const, name: 'Тёмная', icon: '🌙', description: 'Тёмная тема для комфорта глаз' },
+    { id: 'cosmic' as const, name: 'Космическая', icon: '🌌', description: 'Космос с планетами и звёздами' },
+  ];
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
       <h1 className="text-3xl font-bold mb-6">Настройки</h1>
 
       <div className="bg-white rounded-lg shadow p-6 space-y-6">
+        <div>
+          <h2 className="text-xl font-semibold mb-4">Тема оформления</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {themes.map((t) => (
+              <button
+                key={t.id}
+                onClick={() => setTheme(t.id)}
+                className={`p-4 rounded-lg border-2 transition-all ${
+                  theme === t.id
+                    ? 'border-blue-600 bg-blue-50'
+                    : 'border-gray-200 hover:border-blue-300'
+                }`}
+              >
+                <div className="text-4xl mb-2">{t.icon}</div>
+                <div className="font-semibold">{t.name}</div>
+                <div className="text-xs text-gray-600 mt-1">{t.description}</div>
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div>
           <h2 className="text-xl font-semibold mb-4">Информация об аккаунте</h2>
           <div className="space-y-3">

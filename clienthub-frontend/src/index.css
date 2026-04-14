@@ -14,8 +14,93 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 #root {
   min-height: 100vh;
+}
+
+/* Light Theme (default) */
+[data-theme="light"] {
+  --bg-primary: #f9fafb;
+  --bg-secondary: #ffffff;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --border-color: #e5e7eb;
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+  --bg-primary: #111827;
+  --bg-secondary: #1f2937;
+  --text-primary: #f9fafb;
+  --text-secondary: #9ca3af;
+  --border-color: #374151;
+}
+
+[data-theme="dark"] body {
+  background-color: #111827;
+  color: #f9fafb;
+}
+
+[data-theme="dark"] .bg-gray-50 {
+  background-color: #111827 !important;
+}
+
+[data-theme="dark"] .bg-white {
+  background-color: #1f2937 !important;
+}
+
+[data-theme="dark"] .text-gray-800,
+[data-theme="dark"] .text-gray-900 {
+  color: #f9fafb !important;
+}
+
+[data-theme="dark"] .text-gray-600,
+[data-theme="dark"] .text-gray-700 {
+  color: #9ca3af !important;
+}
+
+[data-theme="dark"] .border-gray-200,
+[data-theme="dark"] .border-gray-300 {
+  border-color: #374151 !important;
+}
+
+/* Cosmic Theme */
+[data-theme="cosmic"] body {
+  background: linear-gradient(to bottom, #0a0a1e, #1a1a3e);
+  color: #e0e0ff;
+}
+
+[data-theme="cosmic"] .bg-gray-50 {
+  background-color: rgba(26, 26, 62, 0.6) !important;
+  backdrop-filter: blur(10px);
+}
+
+[data-theme="cosmic"] .bg-white {
+  background-color: rgba(30, 30, 60, 0.8) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(100, 100, 200, 0.3);
+}
+
+[data-theme="cosmic"] .text-gray-800,
+[data-theme="cosmic"] .text-gray-900 {
+  color: #e0e0ff !important;
+}
+
+[data-theme="cosmic"] .text-gray-600,
+[data-theme="cosmic"] .text-gray-700 {
+  color: #b0b0d0 !important;
+}
+
+[data-theme="cosmic"] .border-gray-200,
+[data-theme="cosmic"] .border-gray-300 {
+  border-color: rgba(100, 100, 200, 0.3) !important;
+}
+
+[data-theme="cosmic"] .shadow,
+[data-theme="cosmic"] .shadow-sm,
+[data-theme="cosmic"] .shadow-lg {
+  box-shadow: 0 0 20px rgba(100, 100, 255, 0.3) !important;
 }
