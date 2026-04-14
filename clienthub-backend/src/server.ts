@@ -7,6 +7,7 @@ import orderRoutes from './routes/orders';
 import interactionRoutes from './routes/interactions';
 import commentRoutes from './routes/comments';
 import dashboardRoutes from './routes/dashboard';
+import adminRoutes from './routes/admin';
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/interactions', interactionRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/admin', adminRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'ClientHub API работает' });
