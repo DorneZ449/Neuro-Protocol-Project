@@ -2,6 +2,23 @@ import { Response } from 'express';
 import { AuthRequest } from '../middleware/auth';
 import { query } from '../database/db';
 
+export const getInteractions = async (req: AuthRequest, res: Response) => {
+  try {
+    const result = await query(
+      `SELECT i.*, c.name as client_name, u.name as creator_name
+       FROM interactions i
+       LEFT JOIN clients c ON i.client_id = c.id
+       LEFT JOIN users u ON i.created_by = u.id
+       ORDER BY i.interaction_date DESC`
+    );
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Ошибка получения взаимодействий:', error);
+    res.status(500).json({ error: 'Ошибка сервера' });
+  }
+};
+
 export const createInteraction = async (req: AuthRequest, res: Response) => {
   try {
     const { client_id, type, description, interaction_date } = req.body;
