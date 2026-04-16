@@ -27,11 +27,15 @@ export const CurrencyProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   });
 
   const convert = (amount: number, from: Currency = 'RUB', to: Currency = currency): number => {
-    if (from === to) return amount;
+    // Handle null/undefined/NaN/string
+    const numAmount = Number(amount);
+    if (!isFinite(numAmount)) return 0;
+    
+    if (from === to) return numAmount;
 
-    let rubAmount = amount;
+    let rubAmount = numAmount;
     if (from !== 'RUB') {
-      rubAmount = amount * rates[from];
+      rubAmount = numAmount * rates[from];
     }
 
     if (to === 'RUB') return rubAmount;
@@ -39,12 +43,19 @@ export const CurrencyProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   const format = (amount: number, from: Currency = 'RUB'): string => {
-    // Handle null/undefined/NaN
-    if (amount == null || isNaN(amount)) {
-      amount = 0;
+    // Handle null/undefined/NaN/string
+    const numAmount = Number(amount);
+    if (!isFinite(numAmount)) {
+      const symbols: Record<Currency, string> = {
+        RUB: '₽',
+        USD: '$',
+        EUR: '€',
+        CNY: '¥'
+      };
+      return `0.00 ${symbols[currency]}`;
     }
 
-    const converted = convert(amount, from, currency);
+    const converted = convert(numAmount, from, currency);
     const symbols: Record<Currency, string> = {
       RUB: '₽',
       USD: '$',
