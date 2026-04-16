@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import { AuthRequest } from '../middleware/auth';
 import { query } from '../database/db';
+import { ensureClientAccess } from '../utils/ensureClientAccess';
 
 export const createComment = async (req: AuthRequest, res: Response) => {
   try {
@@ -14,6 +15,12 @@ export const createComment = async (req: AuthRequest, res: Response) => {
     const clientIdNum = parseInt(client_id);
     if (isNaN(clientIdNum)) {
       return res.status(400).json({ error: 'Неверный формат client_id' });
+    }
+
+    // Check client access
+    const isAdmin = req.user?.role === 'admin';
+    if (!(await ensureClientAccess(clientIdNum, req.user!.id, isAdmin))) {
+      return res.status(404).json({ error: 'Клиент не найден или нет доступа' });
     }
 
     // Validate text length (max 2000 chars)
@@ -64,3 +71,4 @@ export const deleteComment = async (req: AuthRequest, res: Response) => {
     res.status(500).json({ error: 'Ошибка сервера' });
   }
 };
+

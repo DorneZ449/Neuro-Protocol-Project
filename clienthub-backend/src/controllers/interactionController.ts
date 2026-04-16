@@ -1,15 +1,20 @@
 import { Response } from 'express';
 import { AuthRequest } from '../middleware/auth';
 import { query } from '../database/db';
+import { ensureClientAccess } from '../utils/ensureClientAccess';
 
 export const getInteractions = async (req: AuthRequest, res: Response) => {
   try {
+    const isAdmin = req.user?.role === 'admin';
+    
     const result = await query(
       `SELECT i.*, c.name as client_name, u.name as creator_name
        FROM interactions i
        LEFT JOIN clients c ON i.client_id = c.id
        LEFT JOIN users u ON i.created_by = u.id
-       ORDER BY i.interaction_date DESC`
+       ${isAdmin ? '' : 'WHERE c.created_by = $1'}
+       ORDER BY i.interaction_date DESC`,
+      isAdmin ? [] : [req.user!.id]
     );
 
     res.json(result.rows);
@@ -33,8 +38,14 @@ export const createInteraction = async (req: AuthRequest, res: Response) => {
       return res.status(400).json({ error: 'Неверный формат client_id' });
     }
 
-    // Validate interaction type
-    const validTypes = ['call', 'email', 'meeting', 'note', 'other'];
+    // Check client access
+    const isAdmin = req.user?.role === 'admin';
+    if (!(await ensureClientAccess(clientIdNum, req.user!.id, isAdmin))) {
+      return res.status(404).json({ error: 'Клиент не найден или нет доступа' });
+    }
+
+    // Validate interaction type - добавлен 'message'
+    const validTypes = ['call', 'email', 'meeting', 'message', 'note', 'other'];
     if (!validTypes.includes(type)) {
       return res.status(400).json({ error: `Тип должен быть одним из: ${validTypes.join(', ')}` });
     }
@@ -87,3 +98,4 @@ export const deleteInteraction = async (req: AuthRequest, res: Response) => {
     res.status(500).json({ error: 'Ошибка сервера' });
   }
 };
+

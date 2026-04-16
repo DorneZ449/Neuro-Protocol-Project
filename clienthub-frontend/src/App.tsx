@@ -71,7 +71,7 @@ function AppContent() {
             <Route
               path="/admin"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute allowedRoles={['admin']}>
                   <Navbar />
                   <Suspense fallback={<LoadingSpinner />}>
                     <Admin />

@@ -17,37 +17,51 @@ export const getClients = async (req: AuthRequest, res: Response) => {
       return res.status(400).json({ error: 'Неверный формат page' });
     }
 
-    // Build WHERE clause
-    const baseFrom = `FROM clients c LEFT JOIN users u ON c.created_by = u.id WHERE 1=1`;
-    let whereClause = '';
-    const params: any[] = [];
-    let paramIndex = 1;
+    // Build WHERE clause with owner filter
+    const isAdmin = req.user?.role === 'admin';
+    const filterParams: Array<string | number> = [];
+    const filters: string[] = [];
+
+    // Owner filter - non-admins can only see their own clients
+    if (!isAdmin) {
+      filterParams.push(req.user!.id);
+      filters.push(`c.created_by = $${filterParams.length}`);
+    }
 
     if (search) {
-      whereClause += ` AND (c.name ILIKE $${paramIndex} OR c.email ILIKE $${paramIndex} OR c.phone ILIKE $${paramIndex})`;
-      params.push(`%${search}%`);
-      paramIndex++;
+      filterParams.push(`%${search}%`);
+      filters.push(
+        `(c.name ILIKE $${filterParams.length} OR c.email ILIKE $${filterParams.length} OR c.phone ILIKE $${filterParams.length} OR c.company ILIKE $${filterParams.length})`
+      );
     }
 
     if (tag) {
-      whereClause += ` AND c.tags ILIKE $${paramIndex}`;
-      params.push(`%${tag}%`);
-      paramIndex++;
+      filterParams.push(`%${tag}%`);
+      filters.push(`c.tags ILIKE $${filterParams.length}`);
     }
 
     if (company) {
-      whereClause += ` AND c.company ILIKE $${paramIndex}`;
-      params.push(`%${company}%`);
-      paramIndex++;
+      filterParams.push(`%${company}%`);
+      filters.push(`c.company ILIKE $${filterParams.length}`);
     }
+
+    const whereClause = filters.length ? `WHERE ${filters.join(' AND ')}` : '';
 
     // Run count and data queries in parallel
     const offset = (pageNum - 1) * limitNum;
     const [countResult, dataResult] = await Promise.all([
-      query(`SELECT COUNT(*) ${baseFrom}${whereClause}`, params),
       query(
-        `SELECT c.*, u.name as creator_name ${baseFrom}${whereClause} ORDER BY c.created_at DESC LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`,
-        [...params, limitNum, offset]
+        `SELECT COUNT(*) FROM clients c ${whereClause}`,
+        filterParams
+      ),
+      query(
+        `SELECT c.*, u.name as creator_name
+         FROM clients c
+         LEFT JOIN users u ON c.created_by = u.id
+         ${whereClause}
+         ORDER BY c.created_at DESC
+         LIMIT $${filterParams.length + 1} OFFSET $${filterParams.length + 2}`,
+        [...filterParams, limitNum, offset]
       )
     ]);
 
@@ -78,15 +92,23 @@ export const getClientById = async (req: AuthRequest, res: Response) => {
       return res.status(400).json({ error: 'Неверный формат ID' });
     }
 
-    // Parallel queries for better performance
-    const [clientResult, ordersResult, interactionsResult, commentsResult] = await Promise.all([
-      query(
-        `SELECT c.*, u.name as creator_name
-         FROM clients c
-         LEFT JOIN users u ON c.created_by = u.id
-         WHERE c.id = $1`,
-        [clientId]
-      ),
+    const isAdmin = req.user?.role === 'admin';
+
+    // Check client access with owner filter
+    const clientResult = await query(
+      `SELECT c.*, u.name as creator_name
+       FROM clients c
+       LEFT JOIN users u ON c.created_by = u.id
+       WHERE c.id = $1 AND (c.created_by = $2 OR $3 = true)`,
+      [clientId, req.user!.id, isAdmin]
+    );
+
+    if (clientResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Клиент не найден' });
+    }
+
+    // Parallel queries for related data
+    const [ordersResult, interactionsResult, commentsResult] = await Promise.all([
       query(
         'SELECT * FROM orders WHERE client_id = $1 ORDER BY order_date DESC',
         [clientId]
@@ -108,10 +130,6 @@ export const getClientById = async (req: AuthRequest, res: Response) => {
         [clientId]
       )
     ]);
-
-    if (clientResult.rows.length === 0) {
-      return res.status(404).json({ error: 'Клиент не найден' });
-    }
 
     res.json({
       client: clientResult.rows[0],
@@ -176,11 +194,6 @@ export const updateClient = async (req: AuthRequest, res: Response) => {
       return res.status(400).json({ error: 'Неверный формат ID' });
     }
 
-    // Validate name length (max 255)
-    if (name && name.length > 255) {
-      return res.status(400).json({ error: 'Имя не может превышать 255 символов' });
-    }
-
     // Validate email format if provided
     if (email) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -189,21 +202,40 @@ export const updateClient = async (req: AuthRequest, res: Response) => {
       }
     }
 
-    // Validate notes length (max 5000)
-    if (notes && notes.length > 5000) {
-      return res.status(400).json({ error: 'Заметки не могут превышать 5000 символов' });
+    // Build dynamic update query
+    const updates: string[] = [];
+    const values: unknown[] = [];
+
+    const addField = (column: string, value: unknown) => {
+      if (value !== undefined) {
+        values.push(value);
+        updates.push(`${column} = $${values.length}`);
+      }
+    };
+
+    addField('name', typeof name === 'string' && name.trim().length > 0 && name.trim().length <= 255 ? name.trim() : name);
+    addField('phone', phone);
+    addField('email', typeof email === 'string' ? email.trim().toLowerCase() : email);
+    addField('company', company);
+    addField('tags', tags);
+    addField('notes', notes && notes.length <= 5000 ? notes : notes);
+
+    if (updates.length === 0) {
+      return res.status(400).json({ error: 'Нет полей для обновления' });
     }
 
-    // Use role from JWT (no extra DB query needed)
-    const isAdmin = req.user?.role === 'admin';
+    updates.push('updated_at = CURRENT_TIMESTAMP');
 
-    // Update with ownership check (admin can update any client)
+    const isAdmin = req.user?.role === 'admin';
+    values.push(clientId, req.user!.id, isAdmin);
+
     const result = await query(
       `UPDATE clients
-       SET name = $1, phone = $2, email = $3, company = $4, tags = $5, notes = $6, updated_at = CURRENT_TIMESTAMP
-       WHERE id = $7 AND (created_by = $8 OR $9 = true)
+       SET ${updates.join(', ')}
+       WHERE id = $${values.length - 2}
+         AND (created_by = $${values.length - 1} OR $${values.length} = true)
        RETURNING *`,
-      [name, phone, email, company, tags, notes, clientId, req.user?.id, isAdmin]
+      values
     );
 
     if (result.rows.length === 0) {

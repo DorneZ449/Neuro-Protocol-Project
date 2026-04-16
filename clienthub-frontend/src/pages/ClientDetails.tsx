@@ -561,6 +561,8 @@ const ClientDetails: React.FC = () => {
                   <option value="email">Email</option>
                   <option value="meeting">Встреча</option>
                   <option value="message">Сообщение</option>
+                  <option value="note">Заметка</option>
+                  <option value="other">Другое</option>
                 </select>
               </div>
 

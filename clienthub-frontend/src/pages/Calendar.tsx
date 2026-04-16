@@ -23,7 +23,7 @@ interface CalendarEvent {
   title: string;
   start: Date;
   end: Date;
-  type: 'meeting' | 'call' | 'email';
+  type: 'meeting' | 'call' | 'email' | 'message' | 'note' | 'other';
   clientName: string;
 }
 
@@ -52,6 +52,9 @@ export default function CalendarPage() {
       meeting: { backgroundColor: '#3b82f6', color: 'white' },
       call: { backgroundColor: '#10b981', color: 'white' },
       email: { backgroundColor: '#f59e0b', color: 'white' },
+      message: { backgroundColor: '#8b5cf6', color: 'white' },
+      note: { backgroundColor: '#ec4899', color: 'white' },
+      other: { backgroundColor: '#6b7280', color: 'white' },
     };
 
     return {

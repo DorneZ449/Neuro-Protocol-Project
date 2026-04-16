@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import { AuthRequest } from '../middleware/auth';
 import { query } from '../database/db';
+import { ensureClientAccess } from '../utils/ensureClientAccess';
 
 export const createOrder = async (req: AuthRequest, res: Response) => {
   try {
@@ -16,6 +17,12 @@ export const createOrder = async (req: AuthRequest, res: Response) => {
       return res.status(400).json({ error: 'Неверный формат client_id' });
     }
 
+    // Check client access
+    const isAdmin = req.user?.role === 'admin';
+    if (!(await ensureClientAccess(clientIdNum, req.user!.id, isAdmin))) {
+      return res.status(404).json({ error: 'Клиент не найден или нет доступа' });
+    }
+
     // Validate title length (max 255)
     if (title.length > 255) {
       return res.status(400).json({ error: 'Название не может превышать 255 символов' });
@@ -24,6 +31,11 @@ export const createOrder = async (req: AuthRequest, res: Response) => {
     // Validate description length (max 2000)
     if (description && description.length > 2000) {
       return res.status(400).json({ error: 'Описание не может превышать 2000 символов' });
+    }
+
+    // Validate amount
+    if (amount !== undefined && (typeof amount !== 'number' || isNaN(amount) || amount < 0)) {
+      return res.status(400).json({ error: 'Сумма должна быть числом не меньше 0' });
     }
 
     // Validate status
@@ -58,14 +70,9 @@ export const updateOrder = async (req: AuthRequest, res: Response) => {
       return res.status(400).json({ error: 'Неверный формат ID' });
     }
 
-    // Validate title length (max 255)
-    if (title && title.length > 255) {
-      return res.status(400).json({ error: 'Название не может превышать 255 символов' });
-    }
-
-    // Validate description length (max 2000)
-    if (description && description.length > 2000) {
-      return res.status(400).json({ error: 'Описание не может превышать 2000 символов' });
+    // Validate amount
+    if (amount !== undefined && (typeof amount !== 'number' || isNaN(amount) || amount < 0)) {
+      return res.status(400).json({ error: 'Сумма должна быть числом не меньше 0' });
     }
 
     // Validate status
@@ -76,16 +83,36 @@ export const updateOrder = async (req: AuthRequest, res: Response) => {
       }
     }
 
-    // Use role from JWT (no extra DB query needed)
-    const isAdmin = req.user?.role === 'admin';
+    // Build dynamic update query
+    const updates: string[] = [];
+    const values: unknown[] = [];
 
-    // Update with ownership check (admin can update any order)
+    const addField = (column: string, value: unknown) => {
+      if (value !== undefined) {
+        values.push(value);
+        updates.push(`${column} = $${values.length}`);
+      }
+    };
+
+    addField('title', typeof title === 'string' && title.trim().length > 0 && title.trim().length <= 255 ? title.trim() : title);
+    addField('description', description && description.length <= 2000 ? description : description);
+    addField('amount', amount);
+    addField('status', status);
+
+    if (updates.length === 0) {
+      return res.status(400).json({ error: 'Нет полей для обновления' });
+    }
+
+    const isAdmin = req.user?.role === 'admin';
+    values.push(orderId, req.user!.id, isAdmin);
+
     const result = await query(
       `UPDATE orders
-       SET title = $1, description = $2, amount = $3, status = $4
-       WHERE id = $5 AND (created_by = $6 OR $7 = true)
+       SET ${updates.join(', ')}
+       WHERE id = $${values.length - 2}
+         AND (created_by = $${values.length - 1} OR $${values.length} = true)
        RETURNING *`,
-      [title, description, amount, status, orderId, req.user?.id, isAdmin]
+      values
     );
 
     if (result.rows.length === 0) {
@@ -128,3 +155,4 @@ export const deleteOrder = async (req: AuthRequest, res: Response) => {
     res.status(500).json({ error: 'Ошибка сервера' });
   }
 };
+
