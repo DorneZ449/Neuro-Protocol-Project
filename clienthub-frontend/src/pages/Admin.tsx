@@ -129,10 +129,10 @@ export default function Admin() {
         </div>
       )}
 
-      <div className="flex gap-2 mb-6">
+      <div className="flex flex-wrap gap-2 mb-6">
         <button
           onClick={() => setActiveTab('users')}
-          className={`px-4 py-2 rounded ${
+          className={`px-3 sm:px-4 py-2 rounded text-sm sm:text-base whitespace-nowrap ${
             activeTab === 'users' ? 'bg-blue-600 text-white' : 'bg-gray-200'
           }`}
         >
@@ -140,7 +140,7 @@ export default function Admin() {
         </button>
         <button
           onClick={() => setActiveTab('clients')}
-          className={`px-4 py-2 rounded ${
+          className={`px-3 sm:px-4 py-2 rounded text-sm sm:text-base whitespace-nowrap ${
             activeTab === 'clients' ? 'bg-blue-600 text-white' : 'bg-gray-200'
           }`}
         >
@@ -148,7 +148,7 @@ export default function Admin() {
         </button>
         <button
           onClick={() => setActiveTab('orders')}
-          className={`px-4 py-2 rounded ${
+          className={`px-3 sm:px-4 py-2 rounded text-sm sm:text-base whitespace-nowrap ${
             activeTab === 'orders' ? 'bg-blue-600 text-white' : 'bg-gray-200'
           }`}
         >
@@ -156,7 +156,7 @@ export default function Admin() {
         </button>
         <button
           onClick={() => setActiveTab('interactions')}
-          className={`px-4 py-2 rounded ${
+          className={`px-3 sm:px-4 py-2 rounded text-sm sm:text-base whitespace-nowrap ${
             activeTab === 'interactions' ? 'bg-blue-600 text-white' : 'bg-gray-200'
           }`}
         >
@@ -166,34 +166,34 @@ export default function Admin() {
 
       <div className="bg-white rounded-lg shadow overflow-x-auto">
         {activeTab === 'users' && (
-          <table className="min-w-full">
+          <table className="min-w-[800px]">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Имя</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Роль</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Создан</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Действия</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">ID</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Имя</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Email</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Роль</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Создан</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Действия</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
               {filteredUsers.map((u) => (
                 <tr key={u.id}>
-                  <td className="px-6 py-4 whitespace-nowrap">{u.id}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{u.name}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{u.email}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-4 py-4 whitespace-nowrap">{u.id}</td>
+                  <td className="px-4 py-4 whitespace-nowrap">{u.name}</td>
+                  <td className="px-4 py-4 whitespace-nowrap">{u.email}</td>
+                  <td className="px-4 py-4 whitespace-nowrap">
                     <span className={`px-2 py-1 rounded text-xs ${
                       u.role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-gray-100 text-gray-800'
                     }`}>
                       {u.role}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-4 py-4 whitespace-nowrap">
                     {new Date(u.created_at).toLocaleString('ru-RU')}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-4 py-4 whitespace-nowrap">
                     {u.role === 'admin' ? (
                       <button
                         onClick={() => changeUserRole(u.id, 'user')}
@@ -219,30 +219,30 @@ export default function Admin() {
         )}
 
         {activeTab === 'clients' && (
-          <table className="min-w-full">
+          <table className="min-w-[900px]">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Имя</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Телефон</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Компания</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Теги</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Создан</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">ID</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Имя</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Email</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Телефон</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Компания</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Теги</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Создан</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
               {data.clients.map((client) => (
                 <tr key={client.id}>
-                  <td className="px-6 py-4 whitespace-nowrap">{client.id}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{client.name}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{client.email}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{client.phone}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{client.company}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-4 py-4 whitespace-nowrap">{client.id}</td>
+                  <td className="px-4 py-4 whitespace-nowrap">{client.name}</td>
+                  <td className="px-4 py-4 whitespace-nowrap">{client.email}</td>
+                  <td className="px-4 py-4 whitespace-nowrap">{client.phone}</td>
+                  <td className="px-4 py-4 whitespace-nowrap">{client.company}</td>
+                  <td className="px-4 py-4 whitespace-nowrap">
                     {client.tags || '-'}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-4 py-4 whitespace-nowrap">
                     {new Date(client.created_at).toLocaleString('ru-RU')}
                   </td>
                 </tr>
@@ -252,23 +252,23 @@ export default function Admin() {
         )}
 
         {activeTab === 'orders' && (
-          <table className="min-w-full">
+          <table className="min-w-[700px]">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Client ID</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Сумма</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Статус</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Создан</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">ID</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Client ID</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Сумма</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Статус</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Создан</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
               {data.orders.map((order) => (
                 <tr key={order.id}>
-                  <td className="px-6 py-4 whitespace-nowrap">{order.id}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{order.client_id}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{format(order.amount)}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-4 py-4 whitespace-nowrap">{order.id}</td>
+                  <td className="px-4 py-4 whitespace-nowrap">{order.client_id}</td>
+                  <td className="px-4 py-4 whitespace-nowrap">{format(order.amount)}</td>
+                  <td className="px-4 py-4 whitespace-nowrap">
                     <span className={`px-2 py-1 rounded text-xs ${
                       order.status === 'completed' ? 'bg-green-100 text-green-800' :
                       order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
@@ -277,7 +277,7 @@ export default function Admin() {
                       {order.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-4 py-4 whitespace-nowrap">
                     {new Date(order.created_at).toLocaleString('ru-RU')}
                   </td>
                 </tr>
@@ -287,24 +287,24 @@ export default function Admin() {
         )}
 
         {activeTab === 'interactions' && (
-          <table className="min-w-full">
+          <table className="min-w-[800px]">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Client ID</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Тип</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Заметки</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Создан</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">ID</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Client ID</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Тип</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Заметки</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Создан</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
               {data.interactions.map((interaction) => (
                 <tr key={interaction.id}>
-                  <td className="px-6 py-4 whitespace-nowrap">{interaction.id}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{interaction.client_id}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{interaction.type}</td>
-                  <td className="px-6 py-4">{interaction.description}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-4 py-4 whitespace-nowrap">{interaction.id}</td>
+                  <td className="px-4 py-4 whitespace-nowrap">{interaction.client_id}</td>
+                  <td className="px-4 py-4 whitespace-nowrap">{interaction.type}</td>
+                  <td className="px-4 py-4">{interaction.description}</td>
+                  <td className="px-4 py-4 whitespace-nowrap">
                     {new Date(interaction.created_at).toLocaleString('ru-RU')}
                   </td>
                 </tr>

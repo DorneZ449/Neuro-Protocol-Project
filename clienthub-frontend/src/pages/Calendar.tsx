@@ -63,7 +63,7 @@ export default function CalendarPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
         <h1 className="text-3xl font-bold">Календарь</h1>
-        <div className="flex gap-4 text-sm">
+        <div className="flex flex-wrap gap-2 sm:gap-4 text-sm">
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 bg-blue-500 rounded"></div>
             <span>Встречи</span>
@@ -79,7 +79,7 @@ export default function CalendarPage() {
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow p-4 md:p-6" style={{ height: '600px' }}>
+      <div className="bg-white rounded-lg shadow p-4 md:p-6" style={{ height: 'calc(100vh - 250px)', minHeight: '400px', maxHeight: '800px' }}>
         <Calendar
           localizer={localizer}
           events={events}

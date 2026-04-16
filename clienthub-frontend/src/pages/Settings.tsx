@@ -69,12 +69,12 @@ export default function Settings() {
         <div>
           <h2 className="text-xl font-semibold mb-4">Уведомления</h2>
           <div className="space-y-3">
-            <label className="flex items-center gap-3">
-              <input type="checkbox" className="w-4 h-4 text-blue-600" defaultChecked />
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input type="checkbox" className="w-6 h-6 text-blue-600 rounded focus:ring-2 focus:ring-blue-500" defaultChecked />
               <span className="text-gray-700">Email уведомления о новых клиентах</span>
             </label>
-            <label className="flex items-center gap-3">
-              <input type="checkbox" className="w-4 h-4 text-blue-600" defaultChecked />
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input type="checkbox" className="w-6 h-6 text-blue-600 rounded focus:ring-2 focus:ring-blue-500" defaultChecked />
               <span className="text-gray-700">Email уведомления о новых заказах</span>
             </label>
             <p className="text-sm text-gray-500 mt-2">Функция в разработке</p>

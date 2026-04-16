@@ -170,14 +170,14 @@ const Dashboard: React.FC = () => {
           <div className="p-6">
             {data?.topClients && data.topClients.length > 0 ? (
               <div className="overflow-x-auto">
-                <table className="w-full">
+                <table className="w-full min-w-[700px]">
                   <thead>
                     <tr className="border-b border-gray-200">
-                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Клиент</th>
-                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Компания</th>
-                      <th className="text-center py-3 px-4 text-sm font-semibold text-gray-700">Заказы</th>
-                      <th className="text-center py-3 px-4 text-sm font-semibold text-gray-700">Взаимодействия</th>
-                      <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">Сумма</th>
+                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700 whitespace-nowrap">Клиент</th>
+                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700 whitespace-nowrap">Компания</th>
+                      <th className="text-center py-3 px-4 text-sm font-semibold text-gray-700 whitespace-nowrap">Заказы</th>
+                      <th className="text-center py-3 px-4 text-sm font-semibold text-gray-700 whitespace-nowrap">Взаимодействия</th>
+                      <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700 whitespace-nowrap">Сумма</th>
                     </tr>
                   </thead>
                   <tbody>

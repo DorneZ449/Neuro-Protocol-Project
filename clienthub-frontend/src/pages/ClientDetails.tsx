@@ -182,7 +182,7 @@ const ClientDetails: React.FC = () => {
     <div className="p-6 max-w-7xl mx-auto">
       <button
         onClick={() => navigate('/clients')}
-        className="mb-6 flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors"
+        className="mb-6 flex items-center gap-2 py-2 px-3 text-gray-600 hover:text-gray-900 rounded-lg hover:bg-gray-100 transition-colors min-h-[44px]"
       >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -269,10 +269,10 @@ const ClientDetails: React.FC = () => {
       {/* Табы */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100">
         <div className="border-b border-gray-200">
-          <div className="flex">
+          <div className="flex flex-wrap sm:flex-nowrap">
             <button
               onClick={() => setActiveTab('orders')}
-              className={`flex-1 px-6 py-4 font-medium transition-colors ${
+              className={`flex-1 min-w-[120px] px-4 sm:px-6 py-4 font-medium text-sm sm:text-base transition-colors ${
                 activeTab === 'orders'
                   ? 'border-b-2 border-blue-600 text-blue-600 bg-blue-50'
                   : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
@@ -282,7 +282,7 @@ const ClientDetails: React.FC = () => {
             </button>
             <button
               onClick={() => setActiveTab('interactions')}
-              className={`flex-1 px-6 py-4 font-medium transition-colors ${
+              className={`flex-1 min-w-[120px] px-4 sm:px-6 py-4 font-medium text-sm sm:text-base transition-colors ${
                 activeTab === 'interactions'
                   ? 'border-b-2 border-blue-600 text-blue-600 bg-blue-50'
                   : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
@@ -292,7 +292,7 @@ const ClientDetails: React.FC = () => {
             </button>
             <button
               onClick={() => setActiveTab('comments')}
-              className={`flex-1 px-6 py-4 font-medium transition-colors ${
+              className={`flex-1 min-w-[120px] px-4 sm:px-6 py-4 font-medium text-sm sm:text-base transition-colors ${
                 activeTab === 'comments'
                   ? 'border-b-2 border-blue-600 text-blue-600 bg-blue-50'
                   : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
