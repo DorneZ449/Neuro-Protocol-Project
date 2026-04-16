@@ -61,15 +61,13 @@ export default defineConfig({
     /**
      * Прокси API-запросов на бэкенд
      * Решает проблемы CORS в development
-     *
-     * Пример:
-     * proxy: {
-     *   '/api': {
-     *     target: 'http://localhost:8080',
-     *     changeOrigin: true,
-     *   },
-     * },
      */
+    proxy: {
+      '/api': {
+        target: process.env.VITE_API_URL || 'http://localhost:5000',
+        changeOrigin: true,
+      },
+    },
   },
 
   /**

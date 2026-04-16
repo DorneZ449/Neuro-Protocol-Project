@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCurrency } from '../hooks/useCurrency';
 import api from '../api/axios';
+import toast, { Toaster } from 'react-hot-toast';
 
 interface User {
   id: number;
@@ -77,10 +78,10 @@ export default function Admin() {
     try {
       await api.put(`/admin/users/${userId}/role`, { role: newRole });
       fetchData();
-      alert('Роль успешно изменена!');
+      toast.success('Роль успешно изменена!');
     } catch (error) {
       console.error('Error changing role:', error);
-      alert('Ошибка изменения роли');
+      toast.error('Ошибка изменения роли');
     } finally {
       setChangingRoleUserId(null);
     }
@@ -93,8 +94,6 @@ export default function Admin() {
 
   useEffect(() => {
     fetchData();
-    const interval = setInterval(fetchData, 5000);
-    return () => clearInterval(interval);
   }, []);
 
   if (loading) {
@@ -115,7 +114,17 @@ export default function Admin() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Админ-панель</h1>
+      <Toaster position="top-right" />
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Админ-панель</h1>
+        <button
+          onClick={fetchData}
+          disabled={loading}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          {loading ? 'Загрузка...' : 'Обновить'}
+        </button>
+      </div>
 
       {activeTab === 'users' && (
         <div className="mb-4">
@@ -312,10 +321,6 @@ export default function Admin() {
             </tbody>
           </table>
         )}
-      </div>
-
-      <div className="mt-4 text-sm text-gray-500">
-        Обновляется каждые 5 секунд
       </div>
     </div>
   );

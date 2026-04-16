@@ -10,7 +10,10 @@ const seedData = async () => {
     const userResult = await pool.query(
       `INSERT INTO users (email, password_hash, name, role) 
        VALUES ($1, $2, $3, $4) 
-       ON CONFLICT (email) DO UPDATE SET email = EXCLUDED.email
+       ON CONFLICT (email) DO UPDATE SET
+         password_hash = EXCLUDED.password_hash,
+         name = EXCLUDED.name,
+         role = EXCLUDED.role
        RETURNING id`,
       ['demo@clienthub.com', password_hash, 'Демо Пользователь', 'admin']
     );

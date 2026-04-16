@@ -139,6 +139,8 @@ const ClientDetails: React.FC = () => {
     switch (status) {
       case 'completed':
         return 'bg-green-100 text-green-700';
+      case 'in_progress':
+        return 'bg-blue-100 text-blue-700';
       case 'pending':
         return 'bg-yellow-100 text-yellow-700';
       case 'cancelled':
@@ -152,6 +154,8 @@ const ClientDetails: React.FC = () => {
     switch (status) {
       case 'completed':
         return 'Завершён';
+      case 'in_progress':
+        return 'В работе';
       case 'pending':
         return 'В ожидании';
       case 'cancelled':
@@ -171,6 +175,10 @@ const ClientDetails: React.FC = () => {
         return 'Встреча';
       case 'message':
         return 'Сообщение';
+      case 'note':
+        return 'Заметка';
+      case 'other':
+        return 'Другое';
       default:
         return type;
     }
@@ -514,6 +522,7 @@ const ClientDetails: React.FC = () => {
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="pending">В ожидании</option>
+                  <option value="in_progress">В работе</option>
                   <option value="completed">Завершён</option>
                   <option value="cancelled">Отменён</option>
                 </select>

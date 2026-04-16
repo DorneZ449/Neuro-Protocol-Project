@@ -79,6 +79,18 @@ export default function CalendarPage() {
             <div className="w-4 h-4 bg-yellow-500 rounded"></div>
             <span>Email</span>
           </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 bg-purple-500 rounded"></div>
+            <span>Сообщения</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 bg-pink-500 rounded"></div>
+            <span>Заметки</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 bg-gray-500 rounded"></div>
+            <span>Другое</span>
+          </div>
         </div>
       </div>
 
