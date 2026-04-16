@@ -25,7 +25,6 @@ const ClientList: React.FC = () => {
     notes: '',
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isCreating, setIsCreating] = useState(false);
 
   const navigate = useNavigate();
   const queryClient = useQueryClient();
