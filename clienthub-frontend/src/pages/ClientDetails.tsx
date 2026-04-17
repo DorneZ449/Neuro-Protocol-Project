@@ -71,39 +71,76 @@ const ClientDetails: React.FC = () => {
     e.preventDefault();
     setIsCreatingOrder(true);
     try {
-      await orderAPI.create({
-        client_id: clientId,
-        ...orderForm,
-        amount: orderForm.amount ? Number(orderForm.amount) : undefined,
-      });
+      if (editingOrder) {
+        // Редактирование существующего заказа
+        await orderAPI.update(editingOrder.id, {
+          ...orderForm,
+          amount: orderForm.amount ? Number(orderForm.amount) : undefined,
+        });
+      } else {
+        // Создание нового заказа
+        await orderAPI.create({
+          client_id: clientId,
+          ...orderForm,
+          amount: orderForm.amount ? Number(orderForm.amount) : undefined,
+        });
+      }
       setShowOrderModal(false);
       setOrderForm({ title: '', description: '', amount: '', status: 'pending' });
+      setEditingOrder(null);
       refetch();
     } catch (error) {
-      console.error('Ошибка создания заказа:', error);
-      setActionError(getErrorMessage(error, 'Ошибка при создании заказа'));
+      console.error('Ошибка при работе с заказом:', error);
+      setActionError(getErrorMessage(error, 'Ошибка при работе с заказом'));
     } finally {
       setIsCreatingOrder(false);
     }
+  };
+
+  const handleEditOrder = (order: any) => {
+    setEditingOrder(order);
+    setOrderForm({
+      title: order.title || '',
+      description: order.description || '',
+      amount: order.amount ? String(order.amount) : '',
+      status: order.status || 'pending',
+    });
+    setShowOrderModal(true);
   };
 
   const handleCreateInteraction = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsCreatingInteraction(true);
     try {
-      await interactionAPI.create({
-        client_id: clientId,
-        ...interactionForm,
-      });
+      if (editingInteraction) {
+        // Редактирование существующего взаимодействия
+        await interactionAPI.update(editingInteraction.id, interactionForm);
+      } else {
+        // Создание нового взаимодействия
+        await interactionAPI.create({
+          client_id: clientId,
+          ...interactionForm,
+        });
+      }
       setShowInteractionModal(false);
       setInteractionForm({ type: 'call', description: '' });
+      setEditingInteraction(null);
       refetch();
     } catch (error) {
-      console.error('Ошибка создания взаимодействия:', error);
-      setActionError(getErrorMessage(error, 'Ошибка при создании взаимодействия'));
+      console.error('Ошибка при работе с взаимодействием:', error);
+      setActionError(getErrorMessage(error, 'Ошибка при работе с взаимодействием'));
     } finally {
       setIsCreatingInteraction(false);
     }
+  };
+
+  const handleEditInteraction = (interaction: any) => {
+    setEditingInteraction(interaction);
+    setInteractionForm({
+      type: interaction.type || 'call',
+      description: interaction.description || '',
+    });
+    setShowInteractionModal(true);
   };
 
   const handleCreateComment = async (e: React.FormEvent) => {
@@ -111,18 +148,53 @@ const ClientDetails: React.FC = () => {
     if (!commentText.trim()) return;
     setIsCreatingComment(true);
     try {
-      await commentAPI.create({
-        client_id: clientId,
-        text: commentText,
-      });
+      if (editingComment) {
+        // Редактирование существующего комментария
+        await commentAPI.update(editingComment.id, { text: commentText });
+      } else {
+        // Создание нового комментария
+        await commentAPI.create({
+          client_id: clientId,
+          text: commentText,
+        });
+      }
       setCommentText('');
+      setEditingComment(null);
       refetch();
     } catch (error) {
-      console.error('Ошибка создания комментария:', error);
-      setActionError(getErrorMessage(error, 'Ошибка при создании комментария'));
+      console.error('Ошибка при работе с комментарием:', error);
+      setActionError(getErrorMessage(error, 'Ошибка при работе с комментарием'));
     } finally {
       setIsCreatingComment(false);
     }
+  };
+
+  const handleEditComment = (comment: any) => {
+    setEditingComment(comment);
+    setCommentText(comment.text || '');
+  };
+
+  const handleUpdateClient = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await clientAPI.update(clientId, clientForm);
+      setShowEditClientModal(false);
+      refetch();
+    } catch (error) {
+      console.error('Ошибка обновления клиента:', error);
+      setActionError(getErrorMessage(error, 'Ошибка при обновлении клиента'));
+    }
+  };
+
+  const handleEditClient = (client: any) => {
+    setClientForm({
+      name: client.name || '',
+      email: client.email || '',
+      phone: client.phone || '',
+      company: client.company || '',
+      tags: client.tags || '',
+    });
+    setShowEditClientModal(true);
   };
 
   const handleDeleteClient = async () => {
@@ -241,6 +313,17 @@ const ClientDetails: React.FC = () => {
 
       {/* Карточка клиента */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 mb-6">
+        <div className="flex justify-end mb-4">
+          <button
+            onClick={() => handleEditClient(client)}
+            className="flex items-center gap-2 px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+            Редактировать
+          </button>
+        </div>
         <div className="flex flex-col md:flex-row justify-between gap-6">
           <div className="flex-1">
             <div className="flex items-start gap-4 mb-4">
@@ -397,6 +480,15 @@ const ClientDetails: React.FC = () => {
                           <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(order.status)}`}>
                             {getStatusText(order.status)}
                           </span>
+                          <button
+                            onClick={() => handleEditOrder(order)}
+                            className="mt-2 flex items-center gap-1 text-blue-600 hover:text-blue-700 text-sm"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                            Редактировать
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -439,9 +531,19 @@ const ClientDetails: React.FC = () => {
                             <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">
                               {getInteractionTypeText(interaction.type)}
                             </span>
-                            <p className="text-sm text-gray-500">
-                              {new Date(interaction.interaction_date).toLocaleDateString('ru-RU')}
-                            </p>
+                            <div className="flex items-center gap-2">
+                              <p className="text-sm text-gray-500">
+                                {new Date(interaction.interaction_date).toLocaleDateString('ru-RU')}
+                              </p>
+                              <button
+                                onClick={() => handleEditInteraction(interaction)}
+                                className="text-blue-600 hover:text-blue-700"
+                              >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                              </button>
+                            </div>
                           </div>
                           {interaction.description && (
                             <p className="text-gray-700 mb-2">{interaction.description}</p>
@@ -467,17 +569,31 @@ const ClientDetails: React.FC = () => {
                 <textarea
                   value={commentText}
                   onChange={(e) => setCommentText(e.target.value)}
-                  placeholder="Добавить комментарий..."
+                  placeholder={editingComment ? "Редактировать комментарий..." : "Добавить комментарий..."}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   rows={3}
                 />
-                <button
-                  type="submit"
-                  disabled={!commentText.trim() || isCreatingComment}
-                  className="mt-3 bg-blue-600 text-white px-6 py-2.5 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
-                >
-                  {isCreatingComment ? 'Добавление...' : 'Добавить комментарий'}
-                </button>
+                <div className="mt-3 flex gap-2">
+                  <button
+                    type="submit"
+                    disabled={!commentText.trim() || isCreatingComment}
+                    className="bg-blue-600 text-white px-6 py-2.5 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                  >
+                    {isCreatingComment ? 'Сохранение...' : editingComment ? 'Сохранить' : 'Добавить комментарий'}
+                  </button>
+                  {editingComment && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setEditingComment(null);
+                        setCommentText('');
+                      }}
+                      className="px-6 py-2.5 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors"
+                    >
+                      Отмена
+                    </button>
+                  )}
+                </div>
               </form>
               <div className="space-y-4">
                 {comments.length === 0 ? (
@@ -493,9 +609,19 @@ const ClientDetails: React.FC = () => {
                       <p className="text-gray-800 mb-3">{comment.text}</p>
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-gray-600 font-medium">{comment.creator_name}</span>
-                        <span className="text-gray-500">
-                          {new Date(comment.created_at).toLocaleDateString('ru-RU')}
-                        </span>
+                        <div className="flex items-center gap-3">
+                          <span className="text-gray-500">
+                            {new Date(comment.created_at).toLocaleDateString('ru-RU')}
+                          </span>
+                          <button
+                            onClick={() => handleEditComment(comment)}
+                            className="text-blue-600 hover:text-blue-700"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   ))
@@ -511,7 +637,9 @@ const ClientDetails: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-100">
-              <h2 className="text-2xl font-bold text-gray-800">Новый заказ</h2>
+              <h2 className="text-2xl font-bold text-gray-800">
+                {editingOrder ? 'Редактировать заказ' : 'Новый заказ'}
+              </h2>
             </div>
             <form onSubmit={handleCreateOrder} className="p-6 space-y-4">
               <div>
@@ -575,11 +703,15 @@ const ClientDetails: React.FC = () => {
                   disabled={isCreatingOrder}
                   className="flex-1 bg-blue-600 text-white py-2.5 rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isCreatingOrder ? 'Создание...' : 'Создать'}
+                  {isCreatingOrder ? 'Сохранение...' : editingOrder ? 'Сохранить' : 'Создать'}
                 </button>
                 <button
                   type="button"
-                  onClick={() => setShowOrderModal(false)}
+                  onClick={() => {
+                    setShowOrderModal(false);
+                    setEditingOrder(null);
+                    setOrderForm({ title: '', description: '', amount: '', status: 'pending' });
+                  }}
                   disabled={isCreatingOrder}
                   className="flex-1 bg-gray-100 text-gray-700 py-2.5 rounded-lg hover:bg-gray-200 transition-colors font-medium disabled:opacity-50"
                 >
@@ -595,7 +727,9 @@ const ClientDetails: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl shadow-xl w-full max-w-md">
             <div className="p-6 border-b border-gray-100">
-              <h2 className="text-2xl font-bold text-gray-800">Новое взаимодействие</h2>
+              <h2 className="text-2xl font-bold text-gray-800">
+                {editingInteraction ? 'Редактировать взаимодействие' : 'Новое взаимодействие'}
+              </h2>
             </div>
             <form onSubmit={handleCreateInteraction} className="p-6 space-y-4">
               <div>
@@ -635,13 +769,107 @@ const ClientDetails: React.FC = () => {
                   disabled={isCreatingInteraction}
                   className="flex-1 bg-blue-600 text-white py-2.5 rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isCreatingInteraction ? 'Создание...' : 'Создать'}
+                  {isCreatingInteraction ? 'Сохранение...' : editingInteraction ? 'Сохранить' : 'Создать'}
                 </button>
                 <button
                   type="button"
-                  onClick={() => setShowInteractionModal(false)}
+                  onClick={() => {
+                    setShowInteractionModal(false);
+                    setEditingInteraction(null);
+                    setInteractionForm({ type: 'call', description: '' });
+                  }}
                   disabled={isCreatingInteraction}
                   className="flex-1 bg-gray-100 text-gray-700 py-2.5 rounded-lg hover:bg-gray-200 transition-colors font-medium disabled:opacity-50"
+                >
+                  Отмена
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Модальное окно редактирования клиента */}
+      {showEditClientModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-gray-100">
+              <h2 className="text-2xl font-bold text-gray-800">Редактировать клиента</h2>
+            </div>
+            <form onSubmit={handleUpdateClient} className="p-6 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Имя <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={clientForm.name}
+                  onChange={(e) => setClientForm({ ...clientForm, name: e.target.value })}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  value={clientForm.email}
+                  onChange={(e) => setClientForm({ ...clientForm, email: e.target.value })}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Телефон
+                </label>
+                <input
+                  type="tel"
+                  value={clientForm.phone}
+                  onChange={(e) => setClientForm({ ...clientForm, phone: e.target.value })}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Компания
+                </label>
+                <input
+                  type="text"
+                  value={clientForm.company}
+                  onChange={(e) => setClientForm({ ...clientForm, company: e.target.value })}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Теги
+                </label>
+                <input
+                  type="text"
+                  value={clientForm.tags}
+                  onChange={(e) => setClientForm({ ...clientForm, tags: e.target.value })}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="VIP, Постоянный клиент"
+                />
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <button
+                  type="submit"
+                  className="flex-1 bg-blue-600 text-white py-2.5 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                >
+                  Сохранить
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowEditClientModal(false)}
+                  className="flex-1 bg-gray-100 text-gray-700 py-2.5 rounded-lg hover:bg-gray-200 transition-colors font-medium"
                 >
                   Отмена
                 </button>
