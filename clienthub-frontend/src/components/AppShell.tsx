@@ -1,6 +1,5 @@
 import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
-import SupportWidget from './SupportWidget';
 
 export default function AppShell() {
   return (
@@ -9,7 +8,6 @@ export default function AppShell() {
       <main className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <Outlet />
       </main>
-      <SupportWidget />
     </div>
   );
 }
