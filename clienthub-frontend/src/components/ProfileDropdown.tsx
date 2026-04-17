@@ -39,7 +39,7 @@ export default function ProfileDropdown() {
         </div>
         <span className="hidden sm:inline text-sm font-medium text-app">{user.name}</span>
         <svg
-          className={`w-4 h-4 text-gray-500 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+          className={`w-4 h-4 text-muted transition-transform ${isOpen ? 'rotate-180' : ''}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -51,8 +51,8 @@ export default function ProfileDropdown() {
       {isOpen && (
         <div className="absolute right-0 mt-2 w-56 surface rounded-lg shadow-lg border border-app py-1 z-[100]">
           <div className="px-4 py-3 border-b border-app">
-            <p className="text-sm font-medium text-gray-900">{user.name}</p>
-            <p className="text-xs text-gray-500">{user.email}</p>
+            <p className="text-sm font-medium text-app">{user.name}</p>
+            <p className="text-xs text-muted">{user.email}</p>
           </div>
 
           <button

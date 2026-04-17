@@ -303,7 +303,7 @@ const ClientDetails: React.FC = () => {
 
       <button
         onClick={() => navigate('/clients')}
-        className="mb-6 flex items-center gap-2 py-2 px-3 text-muted hover:text-gray-900 rounded-lg hover:bg-gray-100 transition-colors min-h-[44px]"
+        className="mb-6 flex items-center gap-2 py-2 px-3 text-muted hover:text-app rounded-lg hover:bg-[var(--surface-hover)] transition-colors min-h-[44px]"
       >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -373,7 +373,7 @@ const ClientDetails: React.FC = () => {
             )}
 
             {client.notes && (
-              <div className="p-3 sm:p-4 bg-[var(--surface-hover)] rounded-lg border border-gray-200">
+              <div className="p-3 sm:p-4 bg-[var(--surface-hover)] rounded-lg border border-app">
                 <p className="text-xs sm:text-sm font-medium text-app mb-1">Заметки:</p>
                 <p className="text-muted text-sm break-words">{client.notes}</p>
               </div>
@@ -400,7 +400,7 @@ const ClientDetails: React.FC = () => {
 
       {/* Табы */}
       <div className="surface rounded-xl shadow-sm border border-app">
-        <div className="border-b border-gray-200">
+        <div className="border-b border-app">
           <div className="flex flex-wrap sm:flex-nowrap">
             <button
               onClick={() => setActiveTab('orders')}
@@ -453,18 +453,18 @@ const ClientDetails: React.FC = () => {
                     <svg className="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                     </svg>
-                    <p className="text-gray-500">Заказов пока нет</p>
+                    <p className="text-muted">Заказов пока нет</p>
                   </div>
                 ) : (
                   orders.map((order) => (
-                    <div key={order.id} className="border border-gray-200 rounded-lg p-3 sm:p-5 hover:shadow-md transition-shadow">
+                    <div key={order.id} className="border border-app rounded-lg p-3 sm:p-5 hover:shadow-md transition-shadow">
                       <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
                         <div className="flex-1 min-w-0 w-full">
                           <h3 className="font-semibold text-base sm:text-lg text-app mb-2 break-words">{order.title}</h3>
                           {order.description && (
                             <p className="text-muted text-sm mb-3 break-words">{order.description}</p>
                           )}
-                          <p className="text-xs sm:text-sm text-gray-500 flex items-center gap-2">
+                          <p className="text-xs sm:text-sm text-muted flex items-center gap-2">
                             <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
@@ -515,11 +515,11 @@ const ClientDetails: React.FC = () => {
                     <svg className="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                     </svg>
-                    <p className="text-gray-500">Взаимодействий пока нет</p>
+                    <p className="text-muted">Взаимодействий пока нет</p>
                   </div>
                 ) : (
                   interactions.map((interaction) => (
-                    <div key={interaction.id} className="border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                    <div key={interaction.id} className="border border-app rounded-lg p-5 hover:shadow-md transition-shadow">
                       <div className="flex items-start gap-4">
                         <div className="w-10 h-10 bg-[var(--info-bg)] rounded-full flex items-center justify-center flex-shrink-0">
                           <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -532,7 +532,7 @@ const ClientDetails: React.FC = () => {
                               {getInteractionTypeText(interaction.type)}
                             </span>
                             <div className="flex items-center gap-2">
-                              <p className="text-sm text-gray-500">
+                              <p className="text-sm text-muted">
                                 {new Date(interaction.interaction_date).toLocaleDateString('ru-RU')}
                               </p>
                               <button
@@ -549,7 +549,7 @@ const ClientDetails: React.FC = () => {
                             <p className="text-app mb-2">{interaction.description}</p>
                           )}
                           {interaction.creator_name && (
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs text-muted">
                               Автор: {interaction.creator_name}
                             </p>
                           )}
@@ -601,16 +601,16 @@ const ClientDetails: React.FC = () => {
                     <svg className="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
                     </svg>
-                    <p className="text-gray-500">Комментариев пока нет</p>
+                    <p className="text-muted">Комментариев пока нет</p>
                   </div>
                 ) : (
                   comments.map((comment) => (
-                    <div key={comment.id} className="border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                    <div key={comment.id} className="border border-app rounded-lg p-5 hover:shadow-md transition-shadow">
                       <p className="text-app mb-3">{comment.text}</p>
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-muted font-medium">{comment.creator_name}</span>
                         <div className="flex items-center gap-3">
-                          <span className="text-gray-500">
+                          <span className="text-muted">
                             {new Date(comment.created_at).toLocaleDateString('ru-RU')}
                           </span>
                           <button
@@ -713,7 +713,7 @@ const ClientDetails: React.FC = () => {
                     setOrderForm({ title: '', description: '', amount: '', status: 'pending' });
                   }}
                   disabled={isCreatingOrder}
-                  className="flex-1 surface border border-app text-app py-2.5 rounded-lg hover:bg-gray-200 transition-colors font-medium disabled:opacity-50"
+                  className="flex-1 surface border border-app text-app py-2.5 rounded-lg hover:bg-[var(--surface-hover)] transition-colors font-medium disabled:opacity-50"
                 >
                   Отмена
                 </button>
@@ -779,7 +779,7 @@ const ClientDetails: React.FC = () => {
                     setInteractionForm({ type: 'call', description: '' });
                   }}
                   disabled={isCreatingInteraction}
-                  className="flex-1 surface border border-app text-app py-2.5 rounded-lg hover:bg-gray-200 transition-colors font-medium disabled:opacity-50"
+                  className="flex-1 surface border border-app text-app py-2.5 rounded-lg hover:bg-[var(--surface-hover)] transition-colors font-medium disabled:opacity-50"
                 >
                   Отмена
                 </button>
@@ -869,7 +869,7 @@ const ClientDetails: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowEditClientModal(false)}
-                  className="flex-1 surface border border-app text-app py-2.5 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+                  className="flex-1 surface border border-app text-app py-2.5 rounded-lg hover:bg-[var(--surface-hover)] transition-colors font-medium"
                 >
                   Отмена
                 </button>

@@ -127,7 +127,7 @@ export default function Admin() {
         <button
           onClick={() => setActiveTab('users')}
           className={`px-3 sm:px-4 py-2 rounded text-sm sm:text-base whitespace-nowrap ${
-            activeTab === 'users' ? 'bg-blue-600 text-[var(--primary-contrast)]' : 'bg-gray-200'
+            activeTab === 'users' ? 'bg-blue-600 text-[var(--primary-contrast)]' : 'bg-[var(--surface-hover)]'
           }`}
         >
           Пользователи ({data.users.length})
@@ -135,7 +135,7 @@ export default function Admin() {
         <button
           onClick={() => setActiveTab('clients')}
           className={`px-3 sm:px-4 py-2 rounded text-sm sm:text-base whitespace-nowrap ${
-            activeTab === 'clients' ? 'bg-blue-600 text-[var(--primary-contrast)]' : 'bg-gray-200'
+            activeTab === 'clients' ? 'bg-blue-600 text-[var(--primary-contrast)]' : 'bg-[var(--surface-hover)]'
           }`}
         >
           Клиенты ({data.clients.length})
@@ -143,7 +143,7 @@ export default function Admin() {
         <button
           onClick={() => setActiveTab('orders')}
           className={`px-3 sm:px-4 py-2 rounded text-sm sm:text-base whitespace-nowrap ${
-            activeTab === 'orders' ? 'bg-blue-600 text-[var(--primary-contrast)]' : 'bg-gray-200'
+            activeTab === 'orders' ? 'bg-blue-600 text-[var(--primary-contrast)]' : 'bg-[var(--surface-hover)]'
           }`}
         >
           Заказы ({data.orders.length})
@@ -151,7 +151,7 @@ export default function Admin() {
         <button
           onClick={() => setActiveTab('interactions')}
           className={`px-3 sm:px-4 py-2 rounded text-sm sm:text-base whitespace-nowrap ${
-            activeTab === 'interactions' ? 'bg-blue-600 text-[var(--primary-contrast)]' : 'bg-gray-200'
+            activeTab === 'interactions' ? 'bg-blue-600 text-[var(--primary-contrast)]' : 'bg-[var(--surface-hover)]'
           }`}
         >
           Взаимодействия ({data.interactions.length})
@@ -163,11 +163,11 @@ export default function Admin() {
           <table className="min-w-[800px]">
             <thead className="bg-[var(--surface-hover)]">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">ID</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Имя</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Email</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Роль</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Создан</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted uppercase whitespace-nowrap">ID</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted uppercase whitespace-nowrap">Имя</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted uppercase whitespace-nowrap">Email</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted uppercase whitespace-nowrap">Роль</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted uppercase whitespace-nowrap">Создан</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
@@ -196,13 +196,13 @@ export default function Admin() {
           <table className="min-w-[900px]">
             <thead className="bg-[var(--surface-hover)]">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">ID</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Имя</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Email</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Телефон</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Компания</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Теги</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Создан</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted uppercase whitespace-nowrap">ID</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted uppercase whitespace-nowrap">Имя</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted uppercase whitespace-nowrap">Email</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted uppercase whitespace-nowrap">Телефон</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted uppercase whitespace-nowrap">Компания</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted uppercase whitespace-nowrap">Теги</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted uppercase whitespace-nowrap">Создан</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
@@ -229,11 +229,11 @@ export default function Admin() {
           <table className="min-w-[700px]">
             <thead className="bg-[var(--surface-hover)]">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">ID</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Client ID</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Сумма</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Статус</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Создан</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted uppercase whitespace-nowrap">ID</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted uppercase whitespace-nowrap">Client ID</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted uppercase whitespace-nowrap">Сумма</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted uppercase whitespace-nowrap">Статус</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted uppercase whitespace-nowrap">Создан</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
@@ -264,11 +264,11 @@ export default function Admin() {
           <table className="min-w-[800px]">
             <thead className="bg-[var(--surface-hover)]">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">ID</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Client ID</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Тип</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Заметки</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Создан</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted uppercase whitespace-nowrap">ID</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted uppercase whitespace-nowrap">Client ID</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted uppercase whitespace-nowrap">Тип</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted uppercase whitespace-nowrap">Заметки</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted uppercase whitespace-nowrap">Создан</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">

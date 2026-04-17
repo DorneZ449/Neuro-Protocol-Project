@@ -106,11 +106,11 @@ const Dashboard: React.FC = () => {
                         <p className="text-sm text-muted">{client.company}</p>
                       )}
                       {client.email && (
-                        <p className="text-sm text-gray-500">{client.email}</p>
+                        <p className="text-sm text-muted">{client.email}</p>
                       )}
                     </div>
                     <div className="text-right">
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-muted">
                         {new Date(client.created_at).toLocaleDateString('ru-RU')}
                       </p>
                     </div>
@@ -118,7 +118,7 @@ const Dashboard: React.FC = () => {
                 ))}
               </div>
             ) : (
-              <p className="text-gray-500 text-center py-8">Нет клиентов</p>
+              <p className="text-muted text-center py-8">Нет клиентов</p>
             )}
           </div>
         </div>
@@ -144,7 +144,7 @@ const Dashboard: React.FC = () => {
                         </span>
                         <p className="font-medium text-app">{interaction.client_name}</p>
                       </div>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-muted">
                         {new Date(interaction.interaction_date).toLocaleDateString('ru-RU')}
                       </p>
                     </div>
@@ -152,13 +152,13 @@ const Dashboard: React.FC = () => {
                       <p className="text-sm text-muted">{interaction.description}</p>
                     )}
                     {interaction.creator_name && (
-                      <p className="text-xs text-gray-500 mt-2">Автор: {interaction.creator_name}</p>
+                      <p className="text-xs text-muted mt-2">Автор: {interaction.creator_name}</p>
                     )}
                   </button>
                 ))}
               </div>
             ) : (
-              <p className="text-gray-500 text-center py-8">Нет взаимодействий</p>
+              <p className="text-muted text-center py-8">Нет взаимодействий</p>
             )}
           </div>
         </div>
@@ -173,12 +173,12 @@ const Dashboard: React.FC = () => {
               <div className="overflow-x-auto">
                 <table className="w-full min-w-[700px]">
                   <thead>
-                    <tr className="border-b border-gray-200">
-                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700 whitespace-nowrap">Клиент</th>
-                      <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700 whitespace-nowrap">Компания</th>
-                      <th className="text-center py-3 px-4 text-sm font-semibold text-gray-700 whitespace-nowrap">Заказы</th>
-                      <th className="text-center py-3 px-4 text-sm font-semibold text-gray-700 whitespace-nowrap">Взаимодействия</th>
-                      <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700 whitespace-nowrap">Сумма</th>
+                    <tr className="border-b border-app">
+                      <th className="text-left py-3 px-4 text-sm font-semibold text-app whitespace-nowrap">Клиент</th>
+                      <th className="text-left py-3 px-4 text-sm font-semibold text-app whitespace-nowrap">Компания</th>
+                      <th className="text-center py-3 px-4 text-sm font-semibold text-app whitespace-nowrap">Заказы</th>
+                      <th className="text-center py-3 px-4 text-sm font-semibold text-app whitespace-nowrap">Взаимодействия</th>
+                      <th className="text-right py-3 px-4 text-sm font-semibold text-app whitespace-nowrap">Сумма</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -201,7 +201,7 @@ const Dashboard: React.FC = () => {
                 </table>
               </div>
             ) : (
-              <p className="text-gray-500 text-center py-8">Нет данных</p>
+              <p className="text-muted text-center py-8">Нет данных</p>
             )}
           </div>
         </div>

@@ -276,7 +276,7 @@ const ClientList: React.FC = () => {
                 )}
 
                 <div className="mt-3 pt-3 border-t border-app">
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-muted">
                     Создан: {new Date(client.created_at).toLocaleDateString('ru-RU')}
                   </p>
                 </div>
@@ -473,7 +473,7 @@ const ClientList: React.FC = () => {
                     setErrors({});
                   }}
                   disabled={createClientMutation.isPending}
-                  className="flex-1 surface border border-app text-app py-2.5 rounded-lg hover:bg-gray-200 transition-colors font-medium disabled:opacity-50"
+                  className="flex-1 surface border border-app text-app py-2.5 rounded-lg hover:bg-[var(--surface-hover)] transition-colors font-medium disabled:opacity-50"
                 >
                   Отмена
                 </button>

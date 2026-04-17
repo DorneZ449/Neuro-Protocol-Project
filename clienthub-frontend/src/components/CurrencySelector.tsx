@@ -21,7 +21,7 @@ export default function CurrencySelector() {
             className={`px-3 py-2.5 rounded text-sm font-medium transition-colors min-h-[44px] min-w-[44px] ${
               currency === curr.code
                 ? 'surface text-blue-600 shadow-sm'
-                : 'text-muted hover:text-gray-900'
+                : 'text-muted hover:text-app'
             }`}
             title={curr.name}
             aria-label={`Выбрать валюту ${curr.name}`}
