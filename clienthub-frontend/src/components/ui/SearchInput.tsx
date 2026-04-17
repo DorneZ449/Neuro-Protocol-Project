@@ -16,7 +16,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   ...props
 }) => {
   const [value, setValue] = React.useState('');
-  const timeoutRef = React.useRef<NodeJS.Timeout>();
+  const timeoutRef = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
