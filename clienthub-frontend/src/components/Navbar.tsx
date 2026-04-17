@@ -54,7 +54,7 @@ const Navbar: React.FC = () => {
 
   return (
     <motion.header
-      className="surface sticky top-0 z-40 rounded-none border-x-0 border-t-0"
+      className="surface sticky top-0 z-50 rounded-none border-x-0 border-t-0"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
@@ -136,7 +136,7 @@ const Navbar: React.FC = () => {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            className="mx-4 mb-4 rounded-2xl border border-app glass p-4 shadow-xl lg:hidden overflow-hidden"
+            className="mx-4 mb-4 rounded-2xl border border-app glass p-4 shadow-xl lg:hidden"
             variants={mobileMenuVariants}
             initial="hidden"
             animate="visible"
