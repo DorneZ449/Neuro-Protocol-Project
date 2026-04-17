@@ -26,7 +26,6 @@ export default function ProfileDropdown() {
 
   if (!user) return null;
 
-  const avatarUrl = user.avatar_url;
   const initials = user.name.charAt(0).toUpperCase();
 
   return (
@@ -35,12 +34,8 @@ export default function ProfileDropdown() {
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 sm:gap-3 px-2 sm:px-4 py-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
       >
-        <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center overflow-hidden">
-          {avatarUrl ? (
-            <img src={avatarUrl} alt={user.name} className="w-full h-full object-cover" />
-          ) : (
-            <span className="text-white font-semibold text-sm">{initials}</span>
-          )}
+        <div className="w-8 h-8 bg-gradient-to-br from-primary-600 to-secondary-600 rounded-full flex items-center justify-center">
+          <span className="text-white font-semibold text-sm">{initials}</span>
         </div>
         <span className="hidden sm:inline text-sm font-medium text-gray-700">{user.name}</span>
         <svg

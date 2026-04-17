@@ -132,9 +132,10 @@ const Dashboard: React.FC = () => {
             {data?.recentInteractions && data.recentInteractions.length > 0 ? (
               <div className="space-y-4">
                 {data.recentInteractions.map((interaction: any) => (
-                  <div
+                  <button
                     key={interaction.id}
-                    className="p-4 rounded-lg border border-gray-100 hover:bg-gray-50 transition-colors"
+                    onClick={() => navigate(`/clients/${interaction.client_id}`)}
+                    className="w-full p-4 rounded-lg border border-gray-100 hover:bg-gray-50 transition-colors text-left"
                   >
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center gap-2">
@@ -153,7 +154,7 @@ const Dashboard: React.FC = () => {
                     {interaction.creator_name && (
                       <p className="text-xs text-gray-500 mt-2">Автор: {interaction.creator_name}</p>
                     )}
-                  </div>
+                  </button>
                 ))}
               </div>
             ) : (

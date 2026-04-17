@@ -200,7 +200,10 @@ const ClientDetails: React.FC = () => {
     }
   };
 
-  const totalOrdersAmount = orders.reduce((sum, order) => sum + (order.amount || 0), 0);
+  const totalOrdersAmount = orders.reduce((sum, order) => {
+    const amount = typeof order.amount === 'string' ? parseFloat(order.amount) : order.amount;
+    return sum + (amount || 0);
+  }, 0);
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
